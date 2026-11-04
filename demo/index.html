@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart camera job loader</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      background: #f3f3f3;
+      color: #1c1c1c;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 16px;
+    }
+    h1 { margin: 0; font-size: 16px; }
+    p { margin: 2px 0 0; color: #5c5c5c; font-size: 13px; }
+    button {
+      border: 1px solid #d1d1d1;
+      border-radius: 4px;
+      background: #fbfbfb;
+      color: #1c1c1c;
+      font: inherit;
+      font-weight: 700;
+      padding: 8px 14px;
+      cursor: pointer;
+    }
+    img { width: 100%; height: auto; display: block; background: #f3f3f3; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Smart camera job loader</h1>
+      <p id="caption">PPC2218 is typed into Ridge Carton. The group still has 4 codes.</p>
+    </div>
+    <button type="button" id="replay">Replay</button>
+  </header>
+  <img id="shot" alt="PPC2218 typed into Ridge Carton, which still has 4 codes" src="../screenshots/01-code.png" />
+  <script>
+    const frames = [
+      ["../screenshots/01-code.png", "PPC2218 is typed into Ridge Carton. The group still has 4 codes.", "PPC2218 typed into Ridge Carton, which still has 4 codes"],
+      ["../screenshots/02-mapped.png", "Added. The map sends PPC2218 to RIDGECARTON.jobx. 10 SKUs, 3 groups.", "PPC2218 mapped to RIDGECARTON.jobx, 10 SKUs across 3 groups"],
+      ["../screenshots/03-loaded.png", "Camera 2 went offline, the job uploaded, then loaded. JOB_LOADED in 840ms, and the camera is online.", "Camera 2 online, JOB_LOADED for RIDGECARTON.jobx in 840ms"]
+    ];
+    const shot = document.getElementById("shot");
+    const caption = document.getElementById("caption");
+    let timers = [];
+    function stop() {
+      timers.forEach(clearTimeout);
+      timers = [];
+    }
+    function show(index) {
+      shot.src = frames[index][0];
+      shot.alt = frames[index][2];
+      caption.textContent = frames[index][1];
+    }
+    function play() {
+      stop();
+      show(0);
+      frames.forEach(function (_, index) {
+        if (index === 0) return;
+        timers.push(setTimeout(function () { show(index); }, index * 1600));
+      });
+    }
+    document.getElementById("replay").addEventListener("click", play);
+    play();
+  </script>
+</body>
+</html>
